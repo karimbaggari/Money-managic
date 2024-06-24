@@ -3,6 +3,7 @@ package main
 import (
     "log"
     "net/http"
+	"os"
     "money-managic/controller"
     "money-managic/database"
     "money-managic/repositories"
@@ -15,9 +16,13 @@ func main() {
 	if err != nil {
         log.Fatalf("Error loading .env file: %v", err)
     }
-    database.Connect()
+    
+	database.Connect()
+	dbName := os.Getenv("DATABASE-NAME")
+	dbCollection1 := os.Getenv("DATABASE-COLLECTION1")
 
-    collection := database.GetCollection("testdb", "testcollection")
+
+    collection := database.GetCollection(dbName, dbCollection1)
     repo := repositories.NewRepository(collection)
     handlers := controllers.NewHandlers(repo)
 
