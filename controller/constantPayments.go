@@ -1,33 +1,41 @@
 package controllers
 
 import (
-    "context"
-    "fmt"
-    "net/http"
-    "money-managic/repositories"
-    "go.mongodb.org/mongo-driver/bson"
+	"encoding/json"
+	"fmt"
+	"money-managic/model"
+	"money-managic/services"
+	"net/http"
 )
 
 type Handlers struct {
-    Repo *repositories.Repository
+	Service *services.Services
 }
 
-func NewHandlers(repo *repositories.Repository) *Handlers {
-    return &Handlers{Repo: repo}
+func NewHandlers(service *services.Services) *Handlers {
+	return &Handlers{Service: service}
 }
 
-func (h *Handlers) HomeHandler(w http.ResponseWriter, r *http.Request) {
-    doc := bson.D{{"name", "Home"}, {"message", "Welcome to the Home Page!"}}
+func (h *Handlers) EnterFinances(w http.ResponseWriter, r *http.Request) {
+	var finance model.UserFinance
 
-    result, err := h.Repo.InsertDocument(context.TODO(), doc)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+	err := json.NewDecoder(r.Body).Decode(&finance)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-    fmt.Fprintf(w, "Inserted document with ID: %v", result.InsertedID)
+	result, err := h.Service.EnterFinances(finance)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(result)
+
 }
 
 func (h *Handlers) AboutHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "This is the About Page!")
+	fmt.Fprintf(w, "This is the About Page!")
 }
