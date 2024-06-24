@@ -1,20 +1,32 @@
 package main
 
 import (
-    "fmt"
+    "log"
     "net/http"
+    "money-managic/controller"
+    "money-managic/database"
+    "money-managic/repositories"
+    "github.com/joho/godotenv"
     "github.com/gorilla/mux"
-	"money-managic/controller"
 )
 
-
 func main() {
-    r := mux.NewRouter()
-    r.HandleFunc("/", controller.HomeHandler)
-    r.HandleFunc("/about", controller.AboutHandler)
+	err := godotenv.Load()
+	if err != nil {
+        log.Fatalf("Error loading .env file: %v", err)
+    }
+    database.Connect()
 
-    fmt.Println("Starting server at port 8080")
+    collection := database.GetCollection("testdb", "testcollection")
+    repo := repositories.NewRepository(collection)
+    handlers := controllers.NewHandlers(repo)
+
+    r := mux.NewRouter()
+    r.HandleFunc("/", handlers.HomeHandler).Methods("GET")
+    r.HandleFunc("/about", handlers.AboutHandler).Methods("GET")
+
+    log.Println("Starting server at port 8080")
     if err := http.ListenAndServe(":8080", r); err != nil {
-        fmt.Println(err)
+        log.Println(err)
     }
 }
