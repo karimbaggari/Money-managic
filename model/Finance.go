@@ -5,5 +5,4 @@ type UserFinance struct  {
     constantPayments float64
     extraPayments float64
     minimalLivingBudget float64
-	dailyBudget float64
 }

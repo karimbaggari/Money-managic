@@ -21,7 +21,7 @@ func Connect() {
     uri := fmt.Sprintf("mongodb+srv://kariimbaggarii:%s@managic-cluster.f2hamvg.mongodb.net/?retryWrites=true&w=majority&appName=managic-cluster", password)
     clientOptions := options.Client().ApplyURI(uri)
 
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
     defer cancel()
 
     client, err := mongo.Connect(ctx, clientOptions)
