@@ -23,7 +23,7 @@ func main() {
 	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
 
 	collection := database.GetCollection(dbName, dbCollection1)
-	
+
 	repo := repositories.NewRepository(collection)
 	mongoService := services.NewServices(repo)
 	handlers := controllers.NewHandlers(mongoService)
@@ -37,7 +37,9 @@ func main() {
 	r.HandleFunc("/enter-expenses", handlers.EnterExpenses).Methods("POST")
 	r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
 	r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
-	r.HandleFunc("/store-in-address", memoryHandler.EnterIncomes).Methods("POST")
+	r.HandleFunc("/store-savings-in-address", memoryHandler.SaveLivingBudget).Methods("POST")
+	r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudgetOfSavings).Methods("POST")
+
 
 
 	log.Println("Starting server at port 8080")
