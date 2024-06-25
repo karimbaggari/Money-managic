@@ -9,7 +9,7 @@ import (
 	"money-managic/repositories"
 	"money-managic/services"
 	"net/http"
-	//"os"
+	"os"
 )
 
 func main() {
@@ -19,13 +19,13 @@ func main() {
 	}
 
 	database.Connect()
-	// dbName := os.Getenv("DATABASE_NAME")
-	// dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
+	dbName := os.Getenv("DATABASE_NAME")
+	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
 
-	// collection := database.GetCollection(dbName, dbCollection1)
-	inMemoryRepo :=repositories.NewInMemoryRepository()
-	// repo := repositories.NewRepository(collection)
-	logic := services.NewServices(inMemoryRepo)
+	collection := database.GetCollection(dbName, dbCollection1)
+	//inMemoryRepo :=repositories.NewInMemoryRepository()
+	repo := repositories.NewRepository(collection)
+	logic := services.NewServices(repo)
 	handlers := controllers.NewHandlers(logic)
 
 	r := mux.NewRouter()

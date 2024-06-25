@@ -3,16 +3,15 @@ package services
 import (
 	"context"
 	"money-managic/model"
-	"money-managic/repositories"
-
+	"money-managic/repositories/interfaces"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Services struct {
-	Repo repositories.DocumentRepository
+	Repo interfaces.DocumentRepository
 }
 
-func NewServices(repo repositories.DocumentRepository) *Services {
+func NewServices(repo interfaces.DocumentRepository) *Services {
 	return &Services{Repo: repo}
 }
 
