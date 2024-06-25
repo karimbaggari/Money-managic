@@ -1,9 +1,14 @@
 package repositories
 
 import (
-    "context"
-    "go.mongodb.org/mongo-driver/mongo"
+	"context"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type DocumentRepository interface {
+    InsertDocument(ctx context.Context, doc interface{}) (*mongo.InsertOneResult, error)
+    FindDocument(ctx context.Context, filter interface{}) (*mongo.SingleResult, error)
+}
 
 type Repository struct {
     Collection *mongo.Collection
@@ -12,6 +17,7 @@ type Repository struct {
 func NewRepository(collection *mongo.Collection) *Repository {
     return &Repository{Collection: collection}
 }
+
 
 func (r *Repository) InsertDocument(ctx context.Context, doc interface{}) (*mongo.InsertOneResult, error) {
     return r.Collection.InsertOne(ctx, doc)

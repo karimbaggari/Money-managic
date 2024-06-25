@@ -9,10 +9,10 @@ import (
 )
 
 type Services struct {
-	Repo *repositories.Repository
+	Repo repositories.DocumentRepository
 }
 
-func NewServices(repo *repositories.Repository) *Services {
+func NewServices(repo repositories.DocumentRepository) *Services {
 	return &Services{Repo: repo}
 }
 
@@ -24,6 +24,6 @@ func (s *Services) EnterExpensesService(expenses model.UserExpenses) (*mongo.Ins
 	return s.Repo.InsertDocument(context.Background(), expenses)
 }
 
-func (s *Services) EnterLivingBudgetService(livingBudget model.UserLivingBudget) (*mongo.InsertOneResult, error) {
+func (s *Services) InsertLivingBudgetService(livingBudget model.UserLivingBudget) (*mongo.InsertOneResult, error) {
 	return s.Repo.InsertDocument(context.Background(), livingBudget)
 }

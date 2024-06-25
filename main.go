@@ -30,8 +30,9 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/enter-incomes", handlers.EnterIncomes).Methods("POST")
 	r.HandleFunc("/enter-expenses", handlers.EnterExpenses).Methods("POST")
-	r.HandleFunc("/enter-LivingBudget", handlers.EnterLivingBudget).Methods("POST")
-	
+	r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
+	r.HandleFunc("insert-Savings", handlers.InsertSavings).Methods("POST")
+
 
 	log.Println("Starting server at port 8080")
 	if err := http.ListenAndServe(":8080", r); err != nil {

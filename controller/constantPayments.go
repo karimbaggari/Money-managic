@@ -55,7 +55,7 @@ func (h *Handlers) EnterExpenses(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func (h *Handlers) EnterLivingBudget(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) InsertLivingBudget(w http.ResponseWriter, r *http.Request) {
 	var LivingBudget model.UserLivingBudget
 
 	err := json.NewDecoder(r.Body).Decode(&LivingBudget)
@@ -64,7 +64,7 @@ func (h *Handlers) EnterLivingBudget(w http.ResponseWriter, r *http.Request) {
             return
     }
 
-	result, err := h.Service.EnterLivingBudgetService(LivingBudget)
+	result, err := h.Service.InsertLivingBudgetService(LivingBudget)
 	if err!= nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
