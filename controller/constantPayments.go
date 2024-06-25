@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"money-managic/model"
 	"money-managic/services"
 	"net/http"
@@ -16,8 +15,8 @@ func NewHandlers(service *services.Services) *Handlers {
 	return &Handlers{Service: service}
 }
 
-func (h *Handlers) EnterFinances(w http.ResponseWriter, r *http.Request) {
-	var finance model.UserFinance
+func (h *Handlers) EnterIncomes(w http.ResponseWriter, r *http.Request) {
+	var finance model.UserIncomes
 
 	err := json.NewDecoder(r.Body).Decode(&finance)
 	if err != nil {
@@ -25,7 +24,7 @@ func (h *Handlers) EnterFinances(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := h.Service.EnterFinances(finance)
+	result, err := h.Service.EnterIncomesService(finance)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -36,6 +35,42 @@ func (h *Handlers) EnterFinances(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *Handlers) AboutHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "This is the About Page!")
+func (h *Handlers) EnterExpenses(w http.ResponseWriter, r *http.Request) {
+	var expenses model.UserExpenses
+
+	err := json.NewDecoder(r.Body).Decode(&expenses)
+	if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+	}
+
+	result, err := h.Service.EnterExpensesService(expenses)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+	}	
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(result)
+}
+
+
+func (h *Handlers) EnterLivingBudget(w http.ResponseWriter, r *http.Request) {
+	var LivingBudget model.UserLivingBudget
+
+	err := json.NewDecoder(r.Body).Decode(&LivingBudget)
+	if err!= nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+    }
+
+	result, err := h.Service.EnterLivingBudgetService(LivingBudget)
+	if err!= nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(result)
 }

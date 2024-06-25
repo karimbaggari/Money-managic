@@ -16,6 +16,14 @@ func NewServices(repo *repositories.Repository) *Services {
 	return &Services{Repo: repo}
 }
 
-func  (s *Services) EnterFinances(finance model.UserFinance) (*mongo.InsertOneResult, error) {
+func  (s *Services) EnterIncomesService(finance model.UserIncomes) (*mongo.InsertOneResult, error) {
 	return s.Repo.InsertDocument(context.Background(), finance)
+}
+
+func (s *Services) EnterExpensesService(expenses model.UserExpenses) (*mongo.InsertOneResult, error) {
+	return s.Repo.InsertDocument(context.Background(), expenses)
+}
+
+func (s *Services) EnterLivingBudgetService(livingBudget model.UserLivingBudget) (*mongo.InsertOneResult, error) {
+	return s.Repo.InsertDocument(context.Background(), livingBudget)
 }

@@ -1,8 +1,17 @@
 package model
 
-type UserFinance struct  {
+type UserIncomes struct  {
 	incomes float64
-    constantPayments float64
-    extraPayments float64
-    minimalLivingBudget float64
+    passiveIncome float64
 }
+
+type UserExpenses struct {
+    constantExpenses float64
+    extraExpenses float64
+}
+
+type UserLivingBudget struct {
+    minimalLivingBudget float64
+    maximalLivingBudget float64
+}
+
