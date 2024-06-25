@@ -27,3 +27,7 @@ func (s *Services) EnterExpensesService(expenses model.UserExpenses) (*mongo.Ins
 func (s *Services) InsertLivingBudgetService(livingBudget model.UserLivingBudget) (*mongo.InsertOneResult, error) {
 	return s.Repo.InsertDocument(context.Background(), livingBudget)
 }
+
+func (s *Services) InsertSavingsService(savings model.UserSavings) (*mongo.InsertOneResult, error) {
+	return s.Repo.InsertDocument(context.Background(), savings)
+}

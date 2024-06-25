@@ -15,3 +15,9 @@ type UserLivingBudget struct {
     maximalLivingBudget float64
 }
 
+type UserSavings struct {
+    minimalSavings float64
+    maximalSavings float64
+}
+
+

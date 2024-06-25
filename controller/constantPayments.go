@@ -74,3 +74,22 @@ func (h *Handlers) InsertLivingBudget(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(result)
 }
+
+func (h *Handlers) InsertSavings(w http.ResponseWriter, r *http.Request) {
+	var savings model.UserSavings 
+	err := json.NewDecoder(r.Body).Decode(savings)
+	if err!= nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+	result, err := h.Service.InsertSavingsService(savings)
+	if err!= nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+}
+
+w.Header().Set("Content-Type", "application/json")
+w.WriteHeader(http.StatusOK)
+json.NewEncoder(w).Encode(result)
+}
