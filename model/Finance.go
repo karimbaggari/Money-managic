@@ -1,7 +1,6 @@
 package model
 
 type UserIncomes struct  {
-    UserID   string  `json:"user_id" bson:"user_id"`
     Incomes       float64 `json:"incomes" bson:"incomes"`
     PassiveIncome float64 `json:"passiveIncome" bson:"passiveIncome"`
 }
