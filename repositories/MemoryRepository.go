@@ -13,6 +13,7 @@ func NewInMemoryRepository() *InMemoryRepository {
     return &InMemoryRepository{Data: make(map[string]interface{})}
 }
 
+
 func (r *InMemoryRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
     id := fmt.Sprintf("doc%d", len(r.Data)+1) // Generate a simple ID
     r.Data[id] = doc
