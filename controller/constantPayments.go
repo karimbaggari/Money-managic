@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"money-managic/model"
 	"money-managic/services"
 	"net/http"
@@ -24,6 +25,8 @@ func (h *Handlers) EnterIncomes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Printf("Received finance object: %+v\n", finance)
+
 	result, err := h.Service.EnterIncomesService(finance)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -32,7 +35,6 @@ func (h *Handlers) EnterIncomes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(result)
-
 }
 
 func (h *Handlers) EnterExpenses(w http.ResponseWriter, r *http.Request) {
