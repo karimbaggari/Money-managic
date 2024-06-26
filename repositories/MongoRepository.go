@@ -14,11 +14,11 @@ func NewRepository(collection *mongo.Collection) *MongodbRepository {
 }
 
 
-func (r *MongodbRepository) InsertDocument(ctx context.Context, doc interface{}) (*mongo.InsertOneResult, error) {
+func (r *MongodbRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
     return r.Collection.InsertOne(ctx, doc)
 }
 
 
-func (r *MongodbRepository) FindDocument(ctx context.Context, filter interface{}) (*mongo.SingleResult, error) {
+func (r *MongodbRepository) FindDocument(ctx context.Context, filter interface{}) (interface{}, error) {
     return r.Collection.FindOne(ctx, filter), nil
 }
