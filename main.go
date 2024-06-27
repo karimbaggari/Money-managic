@@ -27,13 +27,13 @@ func main() {
 
 	incomesRepo := repositories.NewIncomesRepository(collection)
 	incomesService := services.NewIncomesService(incomesRepo)
-	incomesHandlers := controllers.NewHandlers(incomesService)
+	incomesHandlers := controllers.NewIncomesHandler(incomesService)
 
 	collection = database.GetCollection(dbName, dbCollection2)
 
 	expenseRepo := repositories.NewExpensesRepository(collection)
 	expensesService := services.NewExpensesServices(expenseRepo)
-	expensesHandlers := controllers.NewHandlers(expensesService)
+	expensesHandlers := controllers.NewExpensesHandler(expensesService)
 
 
 	//inMemoryRepo :=repositories.NewInMemoryRepository()

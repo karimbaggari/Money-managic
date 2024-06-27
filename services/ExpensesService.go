@@ -16,6 +16,6 @@ func NewExpensesServices(repo *repositories.ExpensesRepository) *ExpensesService
 	return &ExpensesServices{Repo: repo}
 }
 
-func (s *Services) EnterExpensesService(expenses model.UserExpenses) (interface{}, error) {
+func (s *ExpensesServices) EnterExpensesService(expenses model.UserExpenses) (interface{}, error) {
 	return s.Repo.InsertDocument(context.Background(), expenses)
 }

@@ -14,7 +14,7 @@ func NewExpensesRepository(collection *mongo.Collection) *ExpensesRepository {
 	return &ExpensesRepository{Collection: collection}
 }
 
-func (r *MongodbRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
+func (r *ExpensesRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
 	result, err := r.Collection.InsertOne(ctx, doc)
 	if err != nil {
 		fmt.Println("error in the insertion : ", err.Error())

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"money-managic/database"
 	"money-managic/model"
-	"money-managic/repositories"
+	"money-managic/repositories/MongoRepo"
 	"os"
 )
 

@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"money-managic/model"
 	"money-managic/services"
 	"net/http"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Handlers struct {
@@ -17,53 +15,6 @@ func NewHandlers(service *services.Services) *Handlers {
 	return &Handlers{Service: service}
 }
 
-func (h *Handlers) EnterIncomes(w http.ResponseWriter, r *http.Request) {
-	var finance model.UserIncomes
-
-	err := json.NewDecoder(r.Body).Decode(&finance)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	fmt.Printf("Received finance object: %+v\n", finance)
-
-	result, err := h.Service.EnterIncomesService(finance)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	insertResult, ok := result.(*mongo.InsertOneResult)
-	if !ok {
-		http.Error(w, "Failed to insert document", http.StatusInternalServerError)
-		return
-	}
-
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(insertResult)
-}
-
-func (h *Handlers) EnterExpenses(w http.ResponseWriter, r *http.Request) {
-	var expenses model.UserExpenses
-
-	err := json.NewDecoder(r.Body).Decode(&expenses)
-	if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-	}
-
-	result, err := h.Service.EnterExpensesService(expenses)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-	}	
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(result)
-}
 
 
 func (h *Handlers) InsertLivingBudget(w http.ResponseWriter, r *http.Request) {

@@ -14,6 +14,6 @@ func NewIncomesService(repo *repositories.IncomesRepository) *IncomesService {
 	return &IncomesService{Repo: repo}
 }
 
-func  (s *Services) EnterIncomesService(finance model.UserIncomes) (interface{}, error) {
+func  (s *IncomesService) EnterIncomesService(finance model.UserIncomes) (interface{}, error) {
 	return s.Repo.InsertDocument(context.Background(), finance)
 }
