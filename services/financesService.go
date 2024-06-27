@@ -4,6 +4,7 @@ import (
 	"context"
 	"money-managic/model"
 	"money-managic/repositories/interfaces"
+	"money-managic/helpers"
 )
 
 type Services struct {
@@ -23,7 +24,9 @@ func (s *Services) EnterExpensesService(expenses model.UserExpenses) (interface{
 }
 
 func (s *Services) InsertLivingBudgetService(livingBudget model.UserLivingBudget) (interface{}, error) {
-	return s.Repo.InsertDocument(context.Background(), livingBudget)
+	userId := "abc"
+	livingBudgetCalculation := helpers.CalculateLivingBudget(livingBudget, userId)
+	return s.Repo.InsertDocument(context.Background(), livingBudgetCalculation)
 }
 
 func (s *Services) InsertSavingsService(savings model.UserSavings) (interface{}, error) {
