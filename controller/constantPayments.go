@@ -6,6 +6,8 @@ import (
 	"money-managic/model"
 	"money-managic/services"
 	"net/http"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Handlers struct {
@@ -32,9 +34,17 @@ func (h *Handlers) EnterIncomes(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	insertResult, ok := result.(*mongo.InsertOneResult)
+	if !ok {
+		http.Error(w, "Failed to insert document", http.StatusInternalServerError)
+		return
+	}
+
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(result)
+	json.NewEncoder(w).Encode(insertResult)
 }
 
 func (h *Handlers) EnterExpenses(w http.ResponseWriter, r *http.Request) {

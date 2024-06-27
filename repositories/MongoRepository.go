@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"context"
+	"fmt"
+
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -15,7 +17,12 @@ func NewRepository(collection *mongo.Collection) *MongodbRepository {
 
 
 func (r *MongodbRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
-    return r.Collection.InsertOne(ctx, doc)
+    result, err :=  r.Collection.InsertOne(ctx, doc)
+    if err != nil {
+        fmt.Println("error in the insertion ", err.Error())
+        return "",err
+    }
+    return result, err
 }
 
 
