@@ -6,18 +6,18 @@ type UserIncomes struct  {
 }
 
 type UserExpenses struct {
-    constantExpenses float64 `json:"constantExpenses" bson:"constantExpenses"`
-    extraExpenses float64 `json:"extraExpenses" bson:"extraExpenses"`
+    ConstantExpenses float64 `json:"constantExpenses" bson:"constantExpenses"`
+    ExtraExpenses float64 `json:"extraExpenses" bson:"extraExpenses"`
 }
 
 type UserLivingBudget struct {
-    minimalLivingBudget float64 `json:"minimalLivingBudget" bson:"minimalLivingBudget"`
-    maximalLivingBudget float64 `json:"maximalLivingBudget" bson:"maximalLivingBudget"`
+    MinimalLivingBudget float64 `json:"minimalLivingBudget" bson:"minimalLivingBudget"`
+    MaximalLivingBudget float64 `json:"maximalLivingBudget" bson:"maximalLivingBudget"`
 }
 
 type UserSavings struct {
-    minimalSavings float64 `json:"minimalSavings" bson:"minimalSavings"`
-    maximalSavings float64 `json:"maximalSavings" bson:"maximalSavings"`
+    MinimalSavings float64 `json:"minimalSavings" bson:"minimalSavings"`
+    MaximalSavings float64 `json:"maximalSavings" bson:"maximalSavings"`
 }
 
 
