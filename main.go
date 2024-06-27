@@ -37,8 +37,8 @@ func main() {
 	r.HandleFunc("/enter-expenses", handlers.EnterExpenses).Methods("POST")
 	r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
 	r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
-	r.HandleFunc("/store-savings-in-address", memoryHandler.SaveLivingBudget).Methods("POST")
-	r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudgetOfSavings).Methods("POST")
+	r.HandleFunc("/store-savings-in-address", memoryHandler.LivingBudget).Methods("POST")
+	r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudget).Methods("POST")
 
 
 

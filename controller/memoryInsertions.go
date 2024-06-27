@@ -15,7 +15,7 @@ func NewCalculationHandler(service *services.Services) *CalculationHandler {
     return &CalculationHandler{Service: service}
 }
 
-func (h *CalculationHandler) SaveLivingBudget(w http.ResponseWriter, r *http.Request) {
+func (h *CalculationHandler) LivingBudget(w http.ResponseWriter, r *http.Request) {
 	var finance model.UserIncomes
 
 	err := json.NewDecoder(r.Body).Decode(&finance)
@@ -34,7 +34,7 @@ func (h *CalculationHandler) SaveLivingBudget(w http.ResponseWriter, r *http.Req
 	json.NewEncoder(w).Encode(result)
 }
 
-func (h *CalculationHandler) SaveBudgetOfSavings(w http.ResponseWriter, r *http.Request) {
+func (h *CalculationHandler) SaveBudget(w http.ResponseWriter, r *http.Request) {
 	var finance model.UserIncomes
 
 	err := json.NewDecoder(r.Body).Decode(&finance)
