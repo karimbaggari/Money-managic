@@ -6,7 +6,7 @@ import (
 	"log"
 	"money-managic/controller"
 	"money-managic/database"
-	"money-managic/repositories"
+	"money-managic/repositories/MongoRepo"
 	"money-managic/services"
 	"net/http"
 	"os"
@@ -21,24 +21,32 @@ func main() {
 	database.Connect()
 	dbName := os.Getenv("DATABASE_NAME")
 	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
+	dbCollection2 := os.Getenv("DATABASE_COLLECTION2")
 
 	collection := database.GetCollection(dbName, dbCollection1)
 
-	repo := repositories.NewRepository(collection)
-	mongoService := services.NewServices(repo)
-	handlers := controllers.NewHandlers(mongoService)
+	incomesRepo := repositories.NewIncomesRepository(collection)
+	incomesService := services.NewIncomesService(incomesRepo)
+	incomesHandlers := controllers.NewHandlers(incomesService)
 
-	inMemoryRepo :=repositories.NewInMemoryRepository()
-	memoryService := services.NewServices(inMemoryRepo)
-	memoryHandler := controllers.NewCalculationHandler(memoryService)
+	collection = database.GetCollection(dbName, dbCollection2)
+
+	expenseRepo := repositories.NewExpensesRepository(collection)
+	expensesService := services.NewExpensesServices(expenseRepo)
+	expensesHandlers := controllers.NewHandlers(expensesService)
+
+
+	//inMemoryRepo :=repositories.NewInMemoryRepository()
+	//memoryService := services.NewServices(inMemoryRepo)
+	//memoryHandler := controllers.NewCalculationHandler(memoryService)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/enter-incomes", handlers.EnterIncomes).Methods("POST")
-	r.HandleFunc("/enter-expenses", handlers.EnterExpenses).Methods("POST")
-	r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
-	r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
-	r.HandleFunc("/store-savings-in-address", memoryHandler.LivingBudget).Methods("POST")
-	r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudget).Methods("POST")
+	r.HandleFunc("/enter-incomes", incomesHandlers.EnterIncomes).Methods("POST")
+	r.HandleFunc("/enter-expenses", expensesHandlers.EnterExpenses).Methods("POST")
+	//r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
+	//r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
+	//r.HandleFunc("/store-savings-in-address", memoryHandler.LivingBudget).Methods("POST")
+	//r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudget).Methods("POST")
 
 
 
