@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"fmt"
+	"money-managic/model"
 )
 
 type InMemoryRepository struct {
@@ -14,9 +15,10 @@ func NewInMemoryRepository() *InMemoryRepository {
 }
 
 
-func (r *InMemoryRepository) InsertDocument(ctx context.Context, doc interface{}) (interface{}, error) {
+func (r *InMemoryRepository) InsertDocument(livingBudget model.UserLivingBudget) (interface{}, error) {
     id := fmt.Sprintf("doc%d", len(r.Data)+1) // Generate a simple ID
-    r.Data[id] = doc
+    r.Data[id] = id
+    r.Data[id] = livingBudget
     // Since we are using in-memory storage, return a mock InsertOneResult
     return "", nil
 }

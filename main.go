@@ -7,6 +7,7 @@ import (
 	"money-managic/controller"
 	"money-managic/database"
 	"money-managic/repositories/MongoRepo"
+	memory "money-managic/repositories/MemoryRepo"
 	"money-managic/services"
 	"net/http"
 	"os"
@@ -22,6 +23,7 @@ func main() {
 	dbName := os.Getenv("DATABASE_NAME")
 	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
 	dbCollection2 := os.Getenv("DATABASE_COLLECTION2")
+	dbCollection3 := os.Getenv("DATABASE_COLLECTION3")
 
 	collection := database.GetCollection(dbName, dbCollection1)
 
@@ -35,10 +37,11 @@ func main() {
 	expensesService := services.NewExpensesServices(expenseRepo)
 	expensesHandlers := controllers.NewExpensesHandler(expensesService)
 
-	collection = database.GetCollection(dbName, dbCollection2)
+	collection = database.GetCollection(dbName, dbCollection3)
 
 	livingBudgetRepo := repositories.NewLivingBudgetRepository(collection)
-	livingBudgetService := services.NewLivingBudgetServices(livingBudgetRepo)
+	livingBudgetMemoryRepo := memory.NewInMemoryRepository()
+	livingBudgetService := services.NewLivingBudgetServices(livingBudgetRepo, livingBudgetMemoryRepo)
 	livingBudgetHandler := controllers.NewLivingBudgetHandler(livingBudgetService)
 
 	//inMemoryRepo :=repositories.NewInMemoryRepository()
