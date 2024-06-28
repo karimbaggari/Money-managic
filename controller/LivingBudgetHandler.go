@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"money-managic/helpers"
 	"money-managic/model"
 	"money-managic/services"
@@ -16,7 +17,7 @@ func NewLivingBudgetHandler(service *services.LivingBudgetService) *LivingBudget
 	return &LivingBudgetHandler{Service: service}
 }
 
-func (h *LivingBudgetHandler) LivingBudget(w http.ResponseWriter, r *http.Request) {
+func (h *LivingBudgetHandler) LivingBudgetMongoHandler(w http.ResponseWriter, r *http.Request) {
 	var finance model.UserLivingBudget
 	err := json.NewDecoder(r.Body).Decode(&finance)
 	if err != nil {
@@ -24,12 +25,29 @@ func (h *LivingBudgetHandler) LivingBudget(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	CalculationResult, err := helpers.CalculateLivingBudget("123")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	result, err := h.Service.InsertLivingBudgetService(CalculationResult)
+	result, err := h.Service.InsertLivingBudgetService(finance)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(result)
+}
+
+func (h *LivingBudgetHandler) LivingBudgetMemoryHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("1")
+
+	CalculationResult, err := helpers.CalculateLivingBudget("667ddd0cccca77f5aaf54ef8","667ddd3ce75ba1d28706047f")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	result, err := h.Service.InsertLivingBudgetIntoMemoryService(CalculationResult)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

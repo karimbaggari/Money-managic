@@ -44,6 +44,12 @@ func main() {
 	livingBudgetService := services.NewLivingBudgetServices(livingBudgetRepo, livingBudgetMemoryRepo)
 	livingBudgetHandler := controllers.NewLivingBudgetHandler(livingBudgetService)
 
+	// enter incomes
+	// enter expenses 
+	// calculate living budget and make a get request to the memory address value 
+	// make an asychronous call to the mongodb 
+
+
 	//inMemoryRepo :=repositories.NewInMemoryRepository()
 	//memoryService := services.NewServices(inMemoryRepo)
 	//memoryHandler := controllers.NewCalculationHandler(memoryService)
@@ -51,7 +57,8 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/enter-incomes", incomesHandlers.EnterIncomes).Methods("POST")
 	r.HandleFunc("/enter-expenses", expensesHandlers.EnterExpenses).Methods("POST")
-	r.HandleFunc("/insert-LivingBudget", livingBudgetHandler.LivingBudget).Methods("POST")
+	r.HandleFunc("/get-livingBudget", livingBudgetHandler.LivingBudgetMemoryHandler).Methods("GET")
+	r.HandleFunc("/insert-livingBudget", livingBudgetHandler.LivingBudgetMongoHandler).Methods("POST")
 	//r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
 	//r.HandleFunc("/store-savings-in-address", memoryHandler.LivingBudget).Methods("POST")
 	//r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudget).Methods("POST")
