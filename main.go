@@ -35,6 +35,11 @@ func main() {
 	expensesService := services.NewExpensesServices(expenseRepo)
 	expensesHandlers := controllers.NewExpensesHandler(expensesService)
 
+	collection = database.GetCollection(dbName, dbCollection2)
+
+	livingBudgetRepo := repositories.NewLivingBudgetRepository(collection)
+	livingBudgetService := services.NewLivingBudgetServices(livingBudgetRepo)
+	livingBudgetHandler := controllers.NewLivingBudgetHandler(livingBudgetService)
 
 	//inMemoryRepo :=repositories.NewInMemoryRepository()
 	//memoryService := services.NewServices(inMemoryRepo)
@@ -43,7 +48,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/enter-incomes", incomesHandlers.EnterIncomes).Methods("POST")
 	r.HandleFunc("/enter-expenses", expensesHandlers.EnterExpenses).Methods("POST")
-	//r.HandleFunc("/insert-LivingBudget", handlers.InsertLivingBudget).Methods("POST")
+	r.HandleFunc("/insert-LivingBudget", livingBudgetHandler.LivingBudget).Methods("POST")
 	//r.HandleFunc("/insert-Savings", handlers.InsertSavings).Methods("POST")
 	//r.HandleFunc("/store-savings-in-address", memoryHandler.LivingBudget).Methods("POST")
 	//r.HandleFunc("/store-living-budget-in-address", memoryHandler.SaveBudget).Methods("POST")

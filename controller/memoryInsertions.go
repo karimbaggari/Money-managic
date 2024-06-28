@@ -1,54 +1,40 @@
 package controllers
 
-// import (
-// //	"money-managic/services"
-// 	"net/http"
-// 	"money-managic/model"
-// 	"encoding/json"
-// )
+import (
+	"encoding/json"
+	"money-managic/helpers"
+	"money-managic/model"
+	"money-managic/services"
+	"net/http"
+)
 
-// type CalculationHandler struct {
-// 	Service *services.Services
-// }
+type LivingBudgetHandler struct {
+	Service *services.LivingBudgetService
+}
 
-// func NewCalculationHandler(service *services.Services) *CalculationHandler {
-//     return &CalculationHandler{Service: service}
-// }
+func NewLivingBudgetHandler(service *services.LivingBudgetService) *LivingBudgetHandler {
+	return &LivingBudgetHandler{Service: service}
+}
 
-// func (h *CalculationHandler) LivingBudget(w http.ResponseWriter, r *http.Request) {
-// 	var finance model.UserIncomes
+func (h *LivingBudgetHandler) LivingBudget(w http.ResponseWriter, r *http.Request) {
+	var finance model.UserLivingBudget
+	err := json.NewDecoder(r.Body).Decode(&finance)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-// 	err := json.NewDecoder(r.Body).Decode(&finance)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	result, err := h.Service.EnterIncomesService(finance)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(http.StatusOK)
-// 	json.NewEncoder(w).Encode(result)
-// }
-
-// func (h *CalculationHandler) SaveBudget(w http.ResponseWriter, r *http.Request) {
-// 	var finance model.UserIncomes
-
-// 	err := json.NewDecoder(r.Body).Decode(&finance)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	result, err := h.Service.EnterIncomesService(finance)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(http.StatusOK)
-// 	json.NewEncoder(w).Encode(result)
-// }
+	CalculationResult, err := helpers.CalculateLivingBudget("123")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	result, err := h.Service.InsertLivingBudgetService(CalculationResult)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(result)
+}
