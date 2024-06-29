@@ -2,11 +2,9 @@ package helpers
 
 import (
 	"context"
-	// "encoding/json"
 	"fmt"
 	"money-managic/database"
 	"money-managic/model"
-	// "money-managic/repositories/MongoRepo"
 	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -17,32 +15,38 @@ func CalculateLivingBudget(incomesId string, expensesId string) (model.UserLivin
 	database.Connect()
 	dbName := os.Getenv("DATABASE_NAME")
 	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
-	//dbCollection2 := os.Getenv("DATABASE_COLLECTION2")
+	dbCollection2 := os.Getenv("DATABASE_COLLECTION2")
 
 	collection := database.GetCollection(dbName, dbCollection1)
 
-	 // Construct ObjectID from string
-	 id := "667ddd0cccca77f5aaf54ef8"
-	 objectID, err := primitive.ObjectIDFromHex(id)
+	 objectID, err := primitive.ObjectIDFromHex(incomesId)
 	 if err != nil {
 		 fmt.Println("Invalid ObjectID:", err)
 	 }
  
 	// Query document by ObjectID
-	filter := bson.M{"_id": objectID}
-	var result model.UserIncomes
-	err = collection.FindOne(context.Background(), filter).Decode(&result)
+	var incomesModel model.UserIncomes
+	err = collection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&incomesModel)
 	if err != nil {
 		fmt.Println("issue into finding the data of the user check the user Id if it's valid ")
 	}
-	fmt.Println(result)
 
-	// collection = database.GetCollection(dbName, dbCollection2)
 
-	// expenses, err := repositories.NewRepository(collection).FindDocument(context.Background(), expensesId)
-	// if err != nil {
-	// 	fmt.Println("issue into finding the data of the user check the user Id if it's valid ")
-	// }
+	collection = database.GetCollection(dbName, dbCollection2)
+
+	objectID, err = primitive.ObjectIDFromHex(expensesId)
+	 if err != nil {
+		 fmt.Println("Invalid ObjectID:", err)
+	 }
+
+	 	// Query document by ObjectID
+	var expensesModel model.UserExpenses
+	err = collection.FindOne(context.Background(), bson.M{"_id":objectID}).Decode(&expensesModel)
+	if err != nil {
+		fmt.Println("issue into finding the data of the user check the user Id if it's valid ")
+	}
+
+	fmt.Println("incomes ",incomesModel, "expenses", expensesModel)
 
 	// expensesValue, ok := expenses.(float64)
 	// if !ok {
