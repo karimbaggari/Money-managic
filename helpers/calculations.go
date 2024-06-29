@@ -46,14 +46,11 @@ func CalculateLivingBudget(incomesId string, expensesId string) (model.UserLivin
 		fmt.Println("issue into finding the data of the user check the user Id if it's valid ")
 	}
 
-	fmt.Println("incomes ",incomesModel, "expenses", expensesModel)
+	// fmt.Println("incomes ",incomesModel, "expenses", expensesModel)
 
-	// expensesValue, ok := expenses.(float64)
-	// if !ok {
-	// 	fmt.Println("expenses is not of type float64")
-	// }
-	// savingPercentage := 0.2
-	// result := incomes. - expensesValue - (incomesValue.MinimalLivingBudget * savingPercentage)
+	//savingPercentage := 0.2
+	result := (incomesModel.Incomes + incomesModel.PassiveIncome ) - ( expensesModel.ConstantExpenses + expensesModel.ExtraExpenses)
+	fmt.Println("the rest is ", result)
 	// var budget model.UserLivingBudget
 	// if result >= 3000 {
 	// 	budget.MinimalLivingBudget = result
