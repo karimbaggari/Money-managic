@@ -42,7 +42,8 @@ func (h *LivingBudgetHandler) LivingBudgetMongoHandler(w http.ResponseWriter, r 
 func (h *LivingBudgetHandler) LivingBudgetMemoryHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("1")
 
-	CalculationResult, err := helpers.CalculateLivingBudget("667ddd0cccca77f5aaf54ef8","667ddd3ce75ba1d28706047f")
+	CalculationResult,savings, err := helpers.CalculateLivingBudget("667ddd0cccca77f5aaf54ef8","667ddd3ce75ba1d28706047f")
+	fmt.Println(savings)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

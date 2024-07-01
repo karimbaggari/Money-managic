@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CalculateLivingBudget(incomesId string, expensesId string) (model.UserLivingBudget, error) {
+func CalculateLivingBudget(incomesId string, expensesId string) (model.UserLivingBudget, model.UserSavings, error) {
 	database.Connect()
 	dbName := os.Getenv("DATABASE_NAME")
 	dbCollection1 := os.Getenv("DATABASE_COLLECTION1")
@@ -48,20 +48,23 @@ func CalculateLivingBudget(incomesId string, expensesId string) (model.UserLivin
 
 	savingPercentage := 0.2
 	result := (incomesModel.Incomes + incomesModel.PassiveIncome) - (expensesModel.ConstantExpenses + expensesModel.ExtraExpenses)
-	fmt.Println("the rest is ", result)
 	var budget model.UserLivingBudget
+	var savings model.UserSavings
 	if result >= 3000 {
 		amountToSave := result * savingPercentage
 		budget.MaximalLivingBudget = result - amountToSave
-		fmt.Println("the value of savings is ", budget.MaximalLivingBudget)
-		return budget, nil
+		savings.MaximalSavings = amountToSave
+		fmt.Println("the value is ", budget.MinimalLivingBudget, "savings are : ", savings)
+		return budget, savings, nil
 	} else {
 		for result >= 3000 {
 			savingPercentage = savingPercentage - 0.01
 			budget.MinimalLivingBudget = budget.MinimalLivingBudget - (expensesModel.ConstantExpenses + expensesModel.ExtraExpenses) - (budget.MinimalLivingBudget * savingPercentage)
+			budget.MinimalLivingBudget = 0.0
+			savings.MinimalSavings = budget.MinimalLivingBudget
 		}
-		fmt.Println("the value is ", budget.MinimalLivingBudget)
-		return budget, nil
+		fmt.Println("the value is ", budget.MinimalLivingBudget, "zavings are : ", savings)
+		return budget,savings , nil
 	}
 
 }
